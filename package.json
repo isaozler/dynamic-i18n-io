@@ -1,0 +1,28 @@
+{
+  "name": "dynamic-i18n",
+  "version": "1.0.0",
+  "description": "Lightweight dynamic i18n package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaozler/dynamic-i18n-io.git"
+  },
+  "keywords": [
+    "i18n",
+    "template-literals",
+    "dynamic",
+    "labels"
+  ],
+  "author": "Isa Ozler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isaozler/dynamic-i18n-io/issues"
+  },
+  "homepage": "https://github.com/isaozler/dynamic-i18n-io#readme",
+  "dependencies": {
+    "tagged-templates-io": "^1.0.7"
+  }
+}
