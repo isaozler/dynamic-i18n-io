@@ -37,28 +37,30 @@ function mapData(key, val, { template, options, conditions }) {
       return o;
     });
   } else if (typeof options === 'object' && !!Object.keys(options).length) {
-    let result;
     options = Object.keys(options).reduce((optionsAcc, optionKey) => {
       if (typeof options[optionKey] === 'string') {
+        let result;
         if (typeof val === 'object') {
           result = [Object.keys(val).reduce((valAcc, valKeys) => {
             return valAcc = replaceKeys(options[optionKey], valKeys, val[optionKey]);
           }, '')];
         }
+        return {
+          ...optionsAcc,
+          ...result,
+        };
       } else if (!!Array.isArray(options[optionKey])) {
-        result = options[optionKey].reduce((optionsAcc, optionVal) => {
-          return [
-            ...optionsAcc,
-            Object.keys(val).reduce((valAcc, valKeys) => {
-              return valAcc = replaceKeys(optionVal, valKeys, val[valKeys]);
-            }, '')
-          ];
-        }, []);
+
+        return {
+          ...optionsAcc,
+          [optionKey]: options[optionKey].reduce((optionsReplaceAcc, optionReplace) => {
+            return [
+              ...optionsReplaceAcc,
+              (!!optionReplace ? replaceKeys(optionReplace, optionKey, val[optionKey]) : optionReplace),
+            ];
+          }, [])
+        };
       }
-      return {
-        ...optionsAcc,
-        [optionKey]: result,
-      };
     }, {});
   }
   return renderTemplate(template, options, conditions);
@@ -67,7 +69,7 @@ function mapData(key, val, { template, options, conditions }) {
 function replaceKeys(string, key, replaceWith) {
   if (!!!string) return string;
   const strRegExPattern = `\\{${key}\\}`;
-  return string.replace(new RegExp(strRegExPattern, 'g'), replaceWith)
+  return string.replace(new RegExp(strRegExPattern, 'g'), replaceWith);
 };
 
 function parseConditions(key, val, condition) {
