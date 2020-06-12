@@ -1,6 +1,6 @@
 {
   "name": "dynamic-i18n-io",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight dynamic i18n package",
   "main": "index.js",
   "scripts": {

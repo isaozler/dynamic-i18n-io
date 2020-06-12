@@ -3,21 +3,18 @@
 var renderTemplate = require("tagged-templates-io");
 
 function mapData(key, val, { template, options, conditions }) {
-  if (!!Array.isArray(conditions) && typeof options !== 'object') {
+  if (!!Array.isArray(conditions)) {
     conditions = conditions.reduce((acc, c) => {
-      const newVal = parseConditions(c, val);
       return [
         ...acc,
-        newVal,
+        parseConditions(c, val),
       ];
     }, []);
   } else if (typeof conditions === 'object') {
     conditions = Object.keys(conditions).reduce((acc, conditionKey) => {
-      const newVal = parseConditions(conditionKey, val);
       return {
         ...acc,
-        [conditionKey]: newVal,
-
+        [conditionKey]: parseConditions(conditionKey, val, conditions[conditionKey]),
       };
     }, {});
   }
@@ -73,14 +70,18 @@ function replaceKeys(string, key, replaceWith) {
   return string.replace(new RegExp(strRegExPattern, 'g'), replaceWith)
 };
 
-function parseConditions(c, val) {
+function parseConditions(key, val, condition) {
   let newVal;
-  if (typeof c === 'function' && (typeof val === 'number' || typeof val === 'string' || typeof val === 'boolean')) {
-    newVal = c.apply(null, [val]);
-  } else if (typeof c === 'function') {
-    newVal = c.bind(null, val)();
+  if (typeof key === 'function' && (typeof val === 'number' || typeof val === 'string')) {
+    newVal = key.apply(null, [val]);
+  } else if (typeof condition === 'boolean') {
+    newVal = condition;
+  } else if (typeof condition === 'function') {
+    newVal = condition.bind(null, val)();
+  } else if (typeof condition === 'undefined') {
+    newVal = true;
   } else {
-    newVal = c;
+    newVal = !!val && val[key] || true;
   }
   return newVal;
 }
