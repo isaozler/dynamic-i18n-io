@@ -1,8 +1,8 @@
 {
   "name": "dynamic-i18n-io",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Lightweight dynamic i18n package",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf ./dist/ && tsc",
     "dev": "tsc --watch",
