@@ -1,0 +1,4 @@
+{
+  "locale_greeting": "Hi {name} ({age})",
+  "messages_notifications": "You have {count} {messages}"
+}

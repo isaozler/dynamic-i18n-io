@@ -4,71 +4,65 @@ For a statistics/analytics dasboard we needed a bit more advanced and customizab
 
 Basically this is a string interpolation tool which fill the placeholders with data on the fly based on certain condition and values.
 
-## **Notification example**
+## **Localization example** (vue)
 
-```js
+```json
+// en.json
 
-// fetched or static data
-const data = {
-  message_count: 2,
-};
-
-// en.js
-export default {
-  message_count: {
-    // the placeholders {n} are linked to the options
-    // so {0} links to options[0] ...
-    template: `You have {0} unread {1}`,
-
-    // the array items in the options are linked
-    // to the array items in the conditions array
-    options: [ 
-      ['{0}', 'no'],
-      ['messages', 'message']
-    ],
-    
-    // the conditions determine the options to show
-    // so if condition[0] is true
-    // the options[0][0] will be shown else options[0][1]
-    
-    // a condition could also be just true, then you can
-    // have just one array item for the relative options[index]
-    // e.g.: options[0] should always display the number of
-    // message_counts then instead of having a callback
-    // conditions[0] = true will be enough
-    conditions: [
-        (message_count) => message_count > 1 || message_count === 1,
-        (message_count) => message_count > 1 || message_count === 0,
-    ]
-  }
-};
-
-const localizedData = i18n(data, format);
-
-// data = { message_count: 0 }
-// > 'You have no messages'
-
-// data = { message_count: 1 }
-// > 'You have 1 message'
-
-// data = { message_count: 2 } or up
-// > 'You have 2 messages'
-
+{
+  "the_label": "{name} has {count} {messages}"
+}
 ```
 
+```html
+<div>
+  <label>{{ getLabel }}</label>
+</div>
+```
+
+```js
+import en from 'en.json'
+import io18n from 'dynamic-i18n-io'
+
+get getLabel() {
+  const someData = {
+    name: 'Joe',
+    count: 42,
+  }
+
+  return io18n(someData, en, {
+    the_label: {
+      options: {
+        count: ['no', '{count}'],
+        messages: ['messages', ''],
+      },
+      conditions: {
+        count: (props) => props.count === 0
+      }
+    }
+  })
+}
+```
+
+Output
+
+```html
+<div>
+  <label>Joe has 42 messages</label>
+</div>
+```
 
 ## **Greeting example**
 
 ```js
-
 // fetched or static data
 const data = {
   greeting: {
     isMale: true,
-    name:   'Joe',
-    age:    42
+    name: 'Joe',
+    age: 42,
   },
-};
+}
 
 // en.js
 const format = {
@@ -76,18 +70,18 @@ const format = {
     template: `Hello {isMale} {name} {age}`,
     options: {
       isMale: ['Sir', 'Madam'],
-      name:   ['{name}', ''],
-      age:    ['({age})', '']
+      name: ['{name}'], // replace by data in any case
+      age: ['({age})'], // replace by data in any case
     },
     conditions: {
       isMale: (props) => props.isMale,
-      name:   true,
-      age:    (props) => props.isMale || props.age < 20,
-    }
-  }
-};
+      name: true,
+      age: (props) => props.isMale || props.age < 20,
+    },
+  },
+}
 
-const localizedData = i18n(data, format);
+const localizedData = i18n(data, format)
 
 // data = { isMale: true, name: 'Joe', age: 42 }
 // > 'Hello Sir Joe (42)'
@@ -97,5 +91,6 @@ const localizedData = i18n(data, format);
 
 // data = { isMale: false, name: 'Joelle', age: 18 }
 // > 'Hello Madam Joelle (18)'
-
 ```
+
+See [test](./__tests__/examples.spec.ts) for more examples
