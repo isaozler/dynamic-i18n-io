@@ -1,0 +1,16 @@
+{
+  "locale_greeting": "Hi {name} ({age})",
+  "messages_notifications": "You have {count} {messages}",
+  "error": {
+    "save": "Failed to save {entity} due to \"{errorMessage}\"",
+    "load": "Failed to load {entity} due to \"{errorMessage}\"",
+    "modal": {
+      "close": "Closing blocked due to {unsaved_n} unsaved input"
+    },
+    "popUps": [
+      "Title popup name: {name}",
+      "Title popup age: {age}",
+      "Title popup count: {count}"
+    ]
+  }
+}

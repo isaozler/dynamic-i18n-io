@@ -4,6 +4,10 @@ For a statistics/analytics dasboard we needed a bit more advanced and customizab
 
 Basically this is a string interpolation tool which fill the placeholders with data on the fly based on certain condition and values.
 
+> See [test](./__tests__/examples.spec.ts) for various examples!
+
+> **Please note that nested references with the same name will be overwritten by provided data if not specified as the path in the locale file. Try to avoid duplicate field names**
+
 ## **Localization example** (vue)
 
 ```json
@@ -92,5 +96,3 @@ const localizedData = i18n(data, format)
 // data = { isMale: false, name: 'Joelle', age: 18 }
 // > 'Hello Madam Joelle (18)'
 ```
-
-See [test](./__tests__/examples.spec.ts) for more examples

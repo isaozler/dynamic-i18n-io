@@ -1,7 +1,3 @@
-import type { TData, TMapOptions, TOverrideOptions } from "./_.types";
-declare const parseI18n: (data: TData, format?: string | {
-    [key: string]: TMapOptions;
-}, overrides?: {
-    [key: string]: TOverrideOptions;
-}) => {};
+import { TConfig, TData } from "./_.types";
+declare const parseI18n: (data: TData, config?: TConfig) => any;
 export default parseI18n;

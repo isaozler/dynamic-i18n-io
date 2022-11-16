@@ -2153,6 +2153,11 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 lru-cache@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
@@ -2600,10 +2605,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tagged-templates-io@^1.0.7:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/tagged-templates-io/-/tagged-templates-io-1.0.8.tgz#280f2768cde041b2fd146a803b922e3fc114f585"
-  integrity sha512-an1/DO38d5m4l4BXPttG3xuABFGB3R3K6zxYfRp4oD2LIpyM+oKSKLYVli40dDzAEQ4UUqmioedIjkhoZ0+L6g==
+tagged-templates-io@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/tagged-templates-io/-/tagged-templates-io-1.0.9.tgz#d0877fb33e7cc3c84fc234c7448047e39535dfc7"
+  integrity sha512-NebUVsznxCbZ7cKOcItEf9Banxh58lIktbl8e9B6oej22XayKsWIAwbApkRj9aUZAmD6keghsJil/0NH4zqXtw==
 
 test-exclude@^6.0.0:
   version "6.0.0"

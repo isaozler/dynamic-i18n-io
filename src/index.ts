@@ -1,122 +1,33 @@
-import renderTemplate from "tagged-templates-io"
-import type {
-  TData,
-  TMapOptions,
-  TMapVal,
-  TOverrideOptions,
-} from "./_.types"
-import { parseConditionsAsArray, parseOptionsAsArray } from "./helpers"
+import { get } from 'lodash'
+import { getFormat, getNestedFormat, getRecursiveDataVars, getRecursiveTemplateRefs, getRecursiveTemplateVars, isNestedLocale, mapRefVars } from "./helpers"
+import { TConfig, TData } from "./_.types"
 
-const mapData = (val: TMapVal, mapOptions: TMapOptions) => {
-  let { template, options, conditions } = typeof mapOptions === 'string' || typeof mapOptions === 'number'
-    ? { template: mapOptions, options: {}, conditions: {} }
-    : mapOptions
-
-  conditions = parseConditionsAsArray(conditions, val)
-  options = parseOptionsAsArray(options, val)
-
-  return renderTemplate(template, options, conditions)
-}
-
-const parseI18n = (data: TData, format?: { [key: string]: TMapOptions } | string, overrides?: { [key: string]: TOverrideOptions }) => {
+const parseI18n = (data: TData, config?: TConfig) => {
   try {
-    if (typeof format === 'string') {
-      format = JSON.parse(format) as ({ [key: string]: TMapOptions })
-    }
+    if (isNestedLocale(config.format)) {
+      const templateRefs = getRecursiveTemplateRefs({ data, vars: config.format }, config.format)
+      const dataVars = getRecursiveDataVars(data)
+      const mappedRefVars = mapRefVars(templateRefs, dataVars)
 
-    if (!!overrides && typeof overrides === 'string') {
-      overrides = JSON.parse(overrides) as ({ [key: string]: TOverrideOptions })
-    }
-
-    let initData = { ...data }
-    format = Object.keys(format).reduce((res, key) => {
-
-      if (!!format[key] && typeof format[key] === 'string') {
-        format[key] = {
-          template: format[key],
-        }
+      if (!config.settings) {
+        config.settings = {}
       }
 
-      if (overrides && overrides[key]) {
-        format[key] = {
-          ...(typeof format[key] === 'string' ? { template: format[key] } : format[key]),
-          ...overrides[key],
-        }
-      }
+      config.settings.mappedVars = mappedRefVars
 
-      const matches = !!format[key].template ? format[key].template.match(/{(\w+)}/gim).map(d => d.slice(1, -1)) : []
-
-      Object.keys(format).forEach(match => {
-        if (!data[match]) {
-          data[match] = {
-            ...initData,
-          }
-        }
-      });
-
-      const mappedData = {
-        ...res,
-        [key]: {
-          template: `${format[key].template}`,
-          options: matches.reduce((d, k) => ({
-            ...d,
-            [k]: (format[key].options && format[key].options[k]) ? format[key].options[k] : [
-              data[key] && typeof data[key][k] !== 'boolean'
-                ? `{${k}}`
-                : ''
-            ]
-          }), {}),
-          conditions: matches.reduce((d, k) => ({
-            ...d,
-            [k]: (format[key].conditions && format[key].conditions[k]) ? format[key].conditions[k]
-              : !!data[key]
-                ? !!data[key][k]
-                : true
-          }), {}),
-        }
-      }
-
-      return Object.keys(mappedData).reduce((res, mapKey) => {
-        const matches = !!format[mapKey].template ? format[mapKey].template.match(/{(\w+)}/gim).map(d => d.slice(1, -1)) : []
-        return {
+      const nestedObj = Object
+        .keys(config.format)
+        .reduce((res, key) => ({
           ...res,
-          [mapKey]: {
-            ...mappedData[mapKey],
-            options: matches.reduce((resOptions, optionKey) => {
-              const overwrittenOption = format[mapKey] && format[mapKey].options && format[mapKey].options[optionKey] || null
-              const options = mappedData[mapKey].options[optionKey] || overwrittenOption || [data[mapKey][optionKey]]
+          ...getNestedFormat(data, res[key], key, config, data[key])
+        }), config.format)
 
-              return {
-                ...resOptions,
-                [optionKey]: options,
-              }
-            }, {}),
-            conditions: matches.reduce((resConditions, conditionKey) => {
-              const overwrittenCondition = format[mapKey] && format[mapKey].conditions && format[mapKey].conditions[conditionKey] || null
-              const conditions = mappedData[mapKey].conditions[conditionKey] || overwrittenCondition || true
+      return nestedObj
+    }
 
-              return {
-                ...resConditions,
-                [conditionKey]: conditions,
-              }
-            }, {})
-          }
-        }
-      }, {})
-    }, {})
-
-    return Object.keys(data).reduce((a, d) => {
-      if (!Object.keys(format).includes(d)) {
-        return a
-      }
-
-      return {
-        ...a,
-        [d]: !!format[d] && mapData(data[d], format[d]) || data[d],
-      }
-    }, {})
+    return getFormat(data, config.format, config.override);
   } catch (error) {
-    console.log('Parse error: ', error)
+    console.log('Parse error >>> ', error)
     return null
   }
 }
