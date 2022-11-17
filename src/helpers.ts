@@ -1,4 +1,5 @@
-import { get, set, merge } from 'lodash'
+import get from 'lodash.get'
+import merge from 'lodash.merge'
 import renderTemplate from "tagged-templates-io"
 import { TCondition, TConfig, TData, TFormat, TFormatConfig, TKey, TMapOptions, TMapVal, TNewValue, TOverride, TOverrideOptions, TValue } from "./_.types";
 

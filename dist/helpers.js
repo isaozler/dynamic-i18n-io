@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isNestedLocale = exports.getNestedFormat = exports.getRecursiveTemplateVars = exports.getRecursiveTemplateRefs = exports.getRecursiveDataVars = exports.getFormat = exports.mapRefVars = exports.mapData = exports.replaceKeys = exports.parseOptionsAsArray = exports.parseConditionsAsArray = exports.parseConditions = void 0;
-const lodash_1 = require("lodash");
+const lodash_get_1 = __importDefault(require("lodash.get"));
+const lodash_merge_1 = __importDefault(require("lodash.merge"));
 const tagged_templates_io_1 = __importDefault(require("tagged-templates-io"));
 let mappedVars;
 const parseConditions = (key, val, condition) => {
@@ -241,9 +242,9 @@ const getRecursiveDataVars = (data, base = []) => {
     return Object.keys(data || {}).reduce((res, key) => {
         if (typeof data[key] !== 'object' && !Array.isArray(data[key])) {
             const ref = base.join('.');
-            return Object.assign(Object.assign({}, res), { [key]: Object.assign(Object.assign({}, (res[key] || [])), { [ref]: (0, lodash_1.get)(data, key) }) });
+            return Object.assign(Object.assign({}, res), { [key]: Object.assign(Object.assign({}, (res[key] || [])), { [ref]: (0, lodash_get_1.default)(data, key) }) });
         }
-        return (0, lodash_1.merge)(res, (0, exports.getRecursiveDataVars)(data[key], [...base, key]));
+        return (0, lodash_merge_1.default)(res, (0, exports.getRecursiveDataVars)(data[key], [...base, key]));
     }, {});
 };
 exports.getRecursiveDataVars = getRecursiveDataVars;
@@ -252,7 +253,7 @@ const getRecursiveTemplateRefs = ({ data, vars }, refs, base = []) => {
     return Object.keys(refs).reduce((res, key) => {
         if (typeof refs[key] === 'string') {
             const ref = [...base, key].join('.');
-            return Object.assign(Object.assign({}, res), { [ref]: (0, lodash_1.get)(templateVars, ref) });
+            return Object.assign(Object.assign({}, res), { [ref]: (0, lodash_get_1.default)(templateVars, ref) });
         }
         return Object.assign(Object.assign({}, res), (0, exports.getRecursiveTemplateRefs)({ data, vars }, refs[key], [...base, key]));
     }, {});

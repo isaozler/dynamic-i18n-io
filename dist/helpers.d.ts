@@ -7,9 +7,9 @@ export declare const parseOptionsAsArray: (options: TOverrideOptions['options'],
 export declare const replaceKeys: (string: string, key: string, replaceWith: string) => string;
 export declare const mapData: (val: TMapVal, mapOptions: TMapOptions) => any;
 export declare const mapRefVars: (refs: any, data: any) => any;
-export declare const getFormat: (_data: TData, _format?: string | string[] | {
+export declare const getFormat: (_data: TData, _format?: string | {
     [key: string]: TMapOptions;
-}, overrides?: TOverride) => any;
+} | string[], overrides?: TOverride) => any;
 export declare const getRecursiveDataVars: (data: any, base?: any[]) => any;
 export declare const getRecursiveTemplateRefs: ({ data, vars }: {
     data: any;

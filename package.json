@@ -1,6 +1,6 @@
 {
   "name": "dynamic-i18n-io",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Lightweight dynamic i18n package",
   "main": "./dist/index.js",
   "scripts": {
@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/isaozler/dynamic-i18n-io#readme",
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash.get": "^4.4.2",
+    "lodash.merge": "^4.6.2",
     "tagged-templates-io": "^1.0.9"
   },
   "devDependencies": {

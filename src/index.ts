@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash.get'
 import { getFormat, getNestedFormat, getRecursiveDataVars, getRecursiveTemplateRefs, getRecursiveTemplateVars, isNestedLocale, mapRefVars } from "./helpers"
 import { TConfig, TData } from "./_.types"
 
